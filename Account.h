@@ -80,7 +80,7 @@ public:
             try {
                 cout << "Enter Email: ";
                 cin.getline(email, 50);
-                if (!regex_match(email, regex(R"(^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$)"))) {
+                if (!regex_match(email, regex(R"(^[a-zA-Z0-9._%+-]+@[a-z.]+\.[a-z]{2,}$)"))) {
                     throw invalid_argument("Invalid email format.");
                 }
                 break;
@@ -122,7 +122,12 @@ public:
         while (true) {
             try {
                 cout << "Enter Initial Deposit (Minimum Rs. 1000): ";
-                cin >> balance;
+                cin.exceptions(ios::failbit);
+
+                if (!(cin >> balance)) {
+                    throw ios_base::failure("Invalid input");
+                }
+
                 if (balance < 1000) {
                     throw invalid_argument("Initial deposit must be at least Rs 1000.");
                 }
